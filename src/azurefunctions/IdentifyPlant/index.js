@@ -24,6 +24,8 @@ module.exports = async function (context, req) {
 
         const predictedTag = getHighestPrediction(predictions);
 
+        context.log(`Predicted plant is ${predictedTag}`);
+
         context.log(predictedTag);
 
         context.res = {
