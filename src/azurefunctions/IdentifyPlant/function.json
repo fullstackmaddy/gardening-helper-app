@@ -6,9 +6,9 @@
       "direction": "in",
       "name": "req",
       "methods": [
-        "get"
+        "post"
       ],
-      "route": "flower/breed/{flowerName}/information"
+      "route": "plant/breed"
     },
     {
       "type": "http",

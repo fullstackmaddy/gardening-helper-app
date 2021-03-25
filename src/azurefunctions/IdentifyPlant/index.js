@@ -7,7 +7,7 @@ const fs = require('fs');
 
 module.exports = async function (context, req) {
 
-    context.log('Starting function Identify Flower');
+    context.log('Starting function Identify Plant');
 
     
     const imageData = req.body.image;
@@ -27,7 +27,7 @@ module.exports = async function (context, req) {
 
         context.res = {
             status: 200,
-            body: {'identifiedFlower': predictedTag},
+            body: {'identifiedPlant': predictedTag},
             headers: {
                 'Content-Type': 'application/json'
             }

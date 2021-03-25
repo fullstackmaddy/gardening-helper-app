@@ -3,24 +3,15 @@ const axios = require('axios');
 const url = require('url');
 
 module.exports = async function (context, req) {
-    // context.log('JavaScript HTTP trigger function processed a request.');
 
-    // const name = (req.query.name || (req.body && req.body.name));
-    // const responseMessage = name
-    //     ? "Hello, " + name + ". This HTTP triggered function executed successfully."
-    //     : "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response.";
-
-    // context.res = {
-    //     // status: 200, /* Defaults to 200 */
-    //     body: responseMessage
     context.log("Retrieving information about the flower");
 
-    const flowerName = context.bindingData.flowerName;
+    const plantName = context.bindingData.plantName;
 
-    if(flowerName != null)
+    if(plantName != null)
     {
         
-        var result = await getFlowerInformation(flowerName);
+        var result = await getPlantInformation(plantName);
 
         context.res = {
             status: 200,
@@ -33,12 +24,12 @@ module.exports = async function (context, req) {
 }
 
 
-async function getFlowerInformation(flowerName){
+async function getPlantInformation(plantName){
     const trefleApiBase = process.env["TrefleAPIUrlBase"];
 
     var searchUrl = new URL('api/v1/plants/search', trefleApiBase);
 
-    searchUrl.searchParams.append('q', flowerName);
+    searchUrl.searchParams.append('q', plantName);
     searchUrl.searchParams.append('token', process.env["TrefleAPIToken"]);
 
     const plants = await axios.get(searchUrl.toString());
