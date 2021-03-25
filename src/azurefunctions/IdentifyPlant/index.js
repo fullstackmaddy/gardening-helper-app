@@ -10,7 +10,8 @@ module.exports = async function (context, req) {
     context.log('Starting function Identify Plant');
 
     
-    const imageData = req.body.image;
+    const image = req.body.image;
+    var imageData = image.split("base64,")[1];
 
     if(imageData != null)
     {
