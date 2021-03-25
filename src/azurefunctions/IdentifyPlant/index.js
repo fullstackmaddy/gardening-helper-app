@@ -12,7 +12,6 @@ module.exports = async function (context, req) {
     
     const image = req.body.image;
 
-    context.log(image);
     var imageData = image.split("base64,")[1];
 
     if(imageData != null)

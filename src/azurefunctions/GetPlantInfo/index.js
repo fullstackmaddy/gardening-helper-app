@@ -8,10 +8,14 @@ module.exports = async function (context, req) {
 
     const plantName = context.bindingData.plantName;
 
+    context.log(`Plant name is ${plantName}`);
+
     if(plantName != null)
     {
         
         var result = await getPlantInformation(plantName);
+
+        context.log(result);
 
         context.res = {
             status: 200,
