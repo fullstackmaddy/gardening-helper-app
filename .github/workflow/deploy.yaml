@@ -1,0 +1,52 @@
+name: production-deployment-pipeline
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+    - '**/*.md'
+    - '**/*.gitignore'
+    - '**/testassets'
+  workflow_dispatch:
+  
+env:
+  AZURE_FUNCTIONAPP_NAME: func-gardening-helper-dev-01  # set this to your application's name
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: './src/azurefunctions'    # set this to the path to your web app project, defaults to the repository root
+  NODE_VERSION: '14.x'
+  
+
+jobs:
+  build-and-deploy:
+    runs-on: windows-latest
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2
+
+    - name: Install node
+      uses: actions/setup-node@v2.1.4
+      with:
+        node-version: ${{env.NODE_VERSION}}
+    
+    - name: Resolve project dependencies
+      shell: pwsh
+      run: |
+        pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
+        npm install
+        npm run build --if-present
+        npm run test --if-present
+        popd
+    
+    - name: Log In To Azure
+      uses: Azure/login@v1
+      with:
+        creds: ${{secrets.AZURE_CREDENTIALS}}
+    
+    - name: Deploy Azure Function
+      uses: Azure/functions-action@v1
+      id: deploy_prod
+      with:
+        app-name: ${{env.AZURE_FUNCTIONAPP_NAME}}
+        package: ${{env.AZURE_FUNCTIONAPP_PACKAGE_PATH}}
+        publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }} 
+      
